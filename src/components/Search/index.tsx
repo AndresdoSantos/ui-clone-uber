@@ -1,4 +1,4 @@
-import { Platform } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 import {
   GooglePlaceData,
   GooglePlaceDetail,
@@ -22,53 +22,55 @@ export function Search({ onLocateSelected }: SearchProps) {
         autoCapitalize: 'none',
         autoCorrect: false,
         placeholderTextColor: '#333',
+        onChangeText: (data) => console.log(data),
       }}
       fetchDetails
       enablePoweredByContainer={false}
       styles={{
         container: {
           position: 'absolute',
-          top: Platform.OS === 'ios' ? 60 : 40,
+          top: Platform.select({ ios: 60, android: 40 }),
           width: '100%',
         },
         textInputContainer: {
           flex: 1,
           backgroundColor: 'transparent',
-          height: 52,
+          height: 54,
           marginHorizontal: 20,
           borderTopWidth: 0,
           borderBottomWidth: 0,
         },
         textInput: {
-          height: 52,
+          height: 54,
           margin: 0,
           borderRadius: 0,
           paddingTop: 0,
           paddingBottom: 0,
-          paddingRight: 20,
           paddingLeft: 20,
+          paddingRight: 20,
           marginTop: 0,
-          marginRight: 0,
           marginLeft: 0,
+          marginRight: 0,
           elevation: 5,
           shadowColor: '#000',
           shadowOpacity: 0.1,
           shadowOffset: { x: 0, y: 0 },
-          shadowRadius: 16,
+          shadowRadius: 15,
           borderWidth: 1,
-          borderColor: '#ddd',
+          borderColor: '#DDD',
           fontSize: 18,
+          color: '#000',
         },
         listView: {
           borderWidth: 1,
-          borderColor: '#ddd',
-          backgroundColor: '#fff',
+          borderColor: '#DDD',
+          backgroundColor: '#FFF',
           marginHorizontal: 20,
           elevation: 5,
           shadowColor: '#000',
           shadowOpacity: 0.1,
           shadowOffset: { x: 0, y: 0 },
-          shadowRadius: 16,
+          shadowRadius: 15,
           marginTop: 10,
         },
         description: {
@@ -76,7 +78,7 @@ export function Search({ onLocateSelected }: SearchProps) {
         },
         row: {
           padding: 20,
-          height: 56,
+          height: 58,
         },
       }}
     />

@@ -33,37 +33,21 @@ export function Map() {
       const { status } = await Location.requestForegroundPermissionsAsync();
 
       if (status === 'granted') {
-        const response = await Location.getCurrentPositionAsync();
+        const {
+          coords: { latitude, longitude },
+        } = await Location.getCurrentPositionAsync();
 
-        console.log(response);
+        setCurrentPosition({
+          latitude,
+          longitude,
+          latitudeDelta: 0.0143,
+          longitudeDelta: 0.0134,
+        });
       }
     }
 
     getPermission();
   }, []);
-
-  /**useEffect(() => {
-    async function getPosition() {
-      Geolocation.getCurrentPosition(
-        ({ coords: { latitude, longitude } }) => {
-          setCurrentPosition({
-            latitude,
-            longitude,
-            latitudeDelta: 0.0143,
-            longitudeDelta: 0.0134,
-          });
-        },
-        () => {},
-        {
-          timeout: 5000,
-          enableHighAccuracy: true,
-          maximumAge: 1000,
-        }
-      );
-    }
-
-    if (!currentPosition) getPosition();
-  }, [currentPosition]); */
 
   const handleLocationSelected = useCallback(
     (data: GooglePlaceData, { geometry }: GooglePlaceDetail | null) => {
@@ -81,7 +65,7 @@ export function Map() {
   );
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, position: 'relative' }}>
       <MapView
         style={{ flex: 1 }}
         region={currentPosition}
