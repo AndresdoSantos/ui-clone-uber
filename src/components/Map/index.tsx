@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import MapView from 'react-native-maps';
-import Geolocation from '@react-native-community/geolocation';
 import {
   GooglePlaceData,
   GooglePlaceDetail,
 } from 'react-native-google-places-autocomplete';
+import Geolocation from 'react-native-geolocation-service';
+import * as Location from 'expo-location';
 
 import { Search } from '../Search';
 import { Directions } from '../Directions';
@@ -28,6 +29,20 @@ export function Map() {
   const [destination, setDestination] = useState<Destination | null>(null);
 
   useEffect(() => {
+    async function getPermission() {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+
+      if (status === 'granted') {
+        const response = await Location.getCurrentPositionAsync();
+
+        console.log(response);
+      }
+    }
+
+    getPermission();
+  }, []);
+
+  /**useEffect(() => {
     async function getPosition() {
       Geolocation.getCurrentPosition(
         ({ coords: { latitude, longitude } }) => {
@@ -40,7 +55,7 @@ export function Map() {
         },
         () => {},
         {
-          timeout: 2000,
+          timeout: 5000,
           enableHighAccuracy: true,
           maximumAge: 1000,
         }
@@ -48,7 +63,7 @@ export function Map() {
     }
 
     if (!currentPosition) getPosition();
-  }, [currentPosition]);
+  }, [currentPosition]); */
 
   const handleLocationSelected = useCallback(
     (data: GooglePlaceData, { geometry }: GooglePlaceDetail | null) => {
